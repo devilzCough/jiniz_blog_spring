@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jiniz.blog.board.boardMapper">
+	
+	<select id="getPostList" resultType="com.jiniz.blog.board.model.PostVO">
+
+		SELECT PID, CATEGORY, TITLE, CONTENTS, TAG, VIEW_CNT, AUTHOR, CREATED, MODIFIED
+		FROM POSTS
+
+	</select>
+
+
+	<select id="getPostContents" resultType="com.jiniz.blog.board.model.PostVO" parameterType="com.jiniz.blog.board.model.PostVO">
+
+		SELECT PID, CATEGORY, TITLE, CONTENTS, TAG, VIEW_CNT, AUTHOR, CREATED, MODIFIED
+		FROM POSTS
+		WHERE PID = #{pid}
+
+	</select>
+
+	
+	<insert id="insertPost" parameterType="com.jiniz.blog.board.model.PostVO">
+
+		INSERT INTO POSTS (CATEGORY, TITLE, CONTENTS, TAG, VIEW_CNT, AUTHOR, CREATED, MODIFIED)
+		VALUES (
+			#{category}
+			, #{title}
+			, #{contents}
+			, #{tag}
+			, 0
+			, #{author}
+			, now()
+			, now()
+		)
+
+	</insert>
+
+
+	<update id="updatePost" parameterType="com.jiniz.blog.board.model.PostVO">
+
+		UPDATE POSTS SET
+			CATEGORY = #{category}
+			, TITLE = #{title}
+			, CONTENTS = #{contents}
+			, TAG = #{tag}
+			, MODIFIED = now()
+		WHERE
+			PID = ${pid}
+
+	</update>
+
+
+	<delete id="deletePost" parameterType="int">
+
+		DELETE FROM POSTS
+		WHERE PID = #{pid}
+
+	</delete>
+	
+
+	<update id="updateViewCnt" parameterType="com.jiniz.blog.board.model.PostVO">
+
+		UPDATE POSTS SET VIEW_CNT = VIEW_CNT + 1
+		WHERE PID = #{pid}
+
+	</update>
+</mapper>
